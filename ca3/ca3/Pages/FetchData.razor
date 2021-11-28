@@ -5,7 +5,7 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (newReleases == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -14,20 +14,14 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            <p>@title.title</p>
+            @foreach (var titlee in newReleases.titles)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@titlee</td>
                 </tr>
             }
         </tbody>
@@ -35,21 +29,53 @@ else
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+    private NewReleases newReleases;
+    private Title[] titles;
+    private Title title;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        newReleases = await Http.GetFromJsonAsync<NewReleases>
+    ("https://api.watchmode.com/v1/changes/new_titles?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&types=movie,tv_series");
+
+        int release = 1649455;
+        title = await Http.GetFromJsonAsync<Title>($"https://api.watchmode.com/v1/title/{release}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+        //titles += title;
+
+
+
     }
 
-    public class WeatherForecast
+    public class NewReleases
     {
-        public DateTime Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public List<int> titles { get; set; }
+        public int page { get; set; }
+        public int total_results { get; set; }
+        public int total_pages { get; set; }
     }
-}
+
+    public class Title
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public string original_title { get; set; }
+        public string plot_overview { get; set; }
+        public string type { get; set; }
+        public int runtime_minutes { get; set; }
+        public int year { get; set; }
+        public string end_year { get; set; }
+        public string release_date { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+        public string tmdb_type { get; set; }
+        public List<string> genres { get; set; }
+        public string user_rating { get; set; }
+        public string critic_score { get; set; }
+        public string us_rating { get; set; }
+        public string original_language { get; set; }
+        public List<string> similar_titles { get; set; }
+        public List<string> networks { get; set; }
+        public double relevance_percentile { get; set; }
+    }
+
+        }

@@ -91,22 +91,32 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 44 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Services.razor"
+#line 52 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Services.razor"
        
     private ServicesClass[] servicesList;
     private Countries[] regions;
     private string region = "all";
+    private Genres[] genres;
+    private int genre = int.MaxValue;
 
     protected override async Task OnInitializedAsync()
     {
         regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
 
         servicesList = await Http.GetFromJsonAsync<ServicesClass[]>("https://api.watchmode.com/v1/sources/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+
+        genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+
     }
 
     public void setRegion(ChangeEventArgs e)
     {
         region = e.Value.ToString();
+    }
+
+    public void setGenre(ChangeEventArgs e)
+    {
+        genre = Int32.Parse(e.Value.ToString());
     }
 
     public class ServicesClass
@@ -127,6 +137,13 @@ using ca3.Shared;
         public string country { get; set; }
         public string name { get; set; }
         public string flag { get; set; }
+    }
+
+    public class Genres
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public int? tmdb_id { get; set; }
     }
 
 #line default

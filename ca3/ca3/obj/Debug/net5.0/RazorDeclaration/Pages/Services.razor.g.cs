@@ -82,8 +82,8 @@ using ca3.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/fetchdata")]
-    public partial class FetchData : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/services")]
+    public partial class Services : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -91,58 +91,43 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 31 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\FetchData.razor"
+#line 44 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Services.razor"
        
-    private NewReleases newReleases;
-    private Title[] titles;
-    private Title title;
+    private ServicesClass[] servicesList;
+    private Countries[] regions;
+    private string region = "all";
 
     protected override async Task OnInitializedAsync()
     {
-        newReleases = await Http.GetFromJsonAsync<NewReleases>
-    ("https://api.watchmode.com/v1/changes/new_titles?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&types=movie,tv_series");
+        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
 
-        int release = 1649455;
-        title = await Http.GetFromJsonAsync<Title>($"https://api.watchmode.com/v1/title/{release}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
-        //titles += title;
-
-
-
+        servicesList = await Http.GetFromJsonAsync<ServicesClass[]>("https://api.watchmode.com/v1/sources/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
     }
 
-    public class NewReleases
+    public void setRegion(ChangeEventArgs e)
     {
-        public List<int> titles { get; set; }
-        public int page { get; set; }
-        public int total_results { get; set; }
-        public int total_pages { get; set; }
+        region = e.Value.ToString();
     }
 
-    public class Title
+    public class ServicesClass
     {
         public int id { get; set; }
-        public string title { get; set; }
-        public string original_title { get; set; }
-        public string plot_overview { get; set; }
+        public string name { get; set; }
         public string type { get; set; }
-        public int runtime_minutes { get; set; }
-        public int year { get; set; }
-        public string end_year { get; set; }
-        public string release_date { get; set; }
-        public string imdb_id { get; set; }
-        public int tmdb_id { get; set; }
-        public string tmdb_type { get; set; }
-        public List<string> genres { get; set; }
-        public string user_rating { get; set; }
-        public string critic_score { get; set; }
-        public string us_rating { get; set; }
-        public string original_language { get; set; }
-        public List<string> similar_titles { get; set; }
-        public List<string> networks { get; set; }
-        public double relevance_percentile { get; set; }
+        public string logo_100px { get; set; }
+        public string ios_appstore_url { get; set; }
+        public string android_playstore_url { get; set; }
+        public string android_scheme { get; set; }
+        public string ios_scheme { get; set; }
+        public List<string> regions { get; set; }
     }
 
-        
+    public class Countries
+    {
+        public string country { get; set; }
+        public string name { get; set; }
+        public string flag { get; set; }
+    }
 
 #line default
 #line hidden

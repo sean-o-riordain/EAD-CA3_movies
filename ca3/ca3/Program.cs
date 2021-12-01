@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ca3
 {
-    public class Program
+    static public class Program
     {
         public static async Task Main(string[] args)
         {

@@ -91,18 +91,26 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 9 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Counter.razor"
+#line 21 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Counter.razor"
        
-    private int currentCount = 0;
+    private Countries[] regions;
 
-    private void IncrementCount()
+    protected override async Task OnInitializedAsync()
     {
-        currentCount++;
+        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+    }
+
+    public class Countries
+    {
+        public string country { get; set; }
+        public string name { get; set; }
+        public string flag { get; set; }
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
     }
 }
 #pragma warning restore 1591

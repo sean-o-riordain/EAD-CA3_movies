@@ -82,8 +82,8 @@ using ca3.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/")]
-    public partial class Services : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/movieInfo")]
+    public partial class MovieInfo : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -91,12 +91,11 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 77 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Services.razor"
+#line 42 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\MovieInfo.razor"
        
     private ServicesClass[] servicesList;
     private Countries[] regions;
     private string region = "all";
-    private string paymentType = "all";
 
 
     protected override async Task OnInitializedAsync()
@@ -112,11 +111,6 @@ using ca3.Shared;
     public void setRegion(ChangeEventArgs e)
     {
         region = e.Value.ToString();
-    }
-
-    public void setPaymentType(ChangeEventArgs e)
-    {
-        paymentType = e.Value.ToString();
     }
 
     /*

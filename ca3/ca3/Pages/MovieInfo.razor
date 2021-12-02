@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/movieInfo"
 @inject HttpClient Http
 
 <h1>Services</h1>
@@ -12,62 +12,27 @@
 else
 {
     <select @onchange="setRegion">
-        <option value="all">All</option>
+        <option value="All">All</option>
         @foreach (var region in regions)
         {
             <option value=@region.country>@region.name</option>
         }
     </select>
 
-    <select @onchange="setPaymentType">
-        <option value="all">All</option>
-        <option value="sub">Subscription</option>
-        <option value="free">Free</option>
-        <option value="tve">TV Channel App</option>
-        <option value="purchase">purchase</option>
-    </select>
-
-    <a href="/servicesmovies/1">fgfgfg</a>
     @foreach (var service in servicesList)
     {
-        @if (region == "all" && paymentType == "all")
+        @if (region == "all")
         {
-            <p>**************</p>
             <p>@service.name @service.type</p>
-            <a href="/servicesmovies/@service.id"><img src="@service.logo_100px" /></a>
-            <p>****************</p>
-        }
-        else if (region != "all" && paymentType == "all")
-        {
-
-            @if (service.regions.Any(region.Contains))
-            {
-                <p>**************</p>
-                <p>@service.name @service.type</p>
-                <a href="/servicesmovies/@service.id"><img src="@service.logo_100px" /></a>
-                <p>****************</p>
-            }
-        }
-        else if (region == "all" && paymentType != "all")
-        {
-
-            @if (service.type == paymentType)
-            {
-                <p>**************</p>
-                <p>@service.name @service.type</p>
-                <a href="/servicesmovies/@service.id"><img src="@service.logo_100px" /></a>
-                <p>****************</p>
-            }
+            <img src="@service.logo_100px" />
         }
         else
         {
 
-            @if ((service.regions.Any(region.Contains)) && service.type == paymentType)
+            @if (service.regions.Any(region.Contains))
             {
-                <p>**************</p>
                 <p>@service.name @service.type</p>
-                <a href="/servicesmovies/@service.id"><img src="@service.logo_100px" /></a>
-                <p>****************</p>
+                <img src="@service.logo_100px" />
             }
         }
     }
@@ -78,7 +43,6 @@ else
     private ServicesClass[] servicesList;
     private Countries[] regions;
     private string region = "all";
-    private string paymentType = "all";
 
 
     protected override async Task OnInitializedAsync()
@@ -94,11 +58,6 @@ else
     public void setRegion(ChangeEventArgs e)
     {
         region = e.Value.ToString();
-    }
-
-    public void setPaymentType(ChangeEventArgs e)
-    {
-        paymentType = e.Value.ToString();
     }
 
     /*

@@ -90,7 +90,7 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "D:\College\Year 4\EAD\ca3\ca3\ca3\Shared\NavMenu.razor"
+#line 23 "D:\College\Year 4\EAD\ca3\ca3\ca3\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 

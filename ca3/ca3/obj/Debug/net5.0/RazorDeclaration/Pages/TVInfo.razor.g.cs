@@ -82,14 +82,62 @@ using ca3.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/")]
-    public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/tvinfo")]
+    public partial class TVInfo : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 42 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\TVInfo.razor"
+       
+    private ServicesClass[] servicesList;
+    private Countries[] regions;
+    private string region = "all";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+
+        servicesList = await Http.GetFromJsonAsync<ServicesClass[]>("https://api.watchmode.com/v1/sources/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+
+
+
+    }
+
+    public void setRegion(ChangeEventArgs e)
+    {
+        region = e.Value.ToString();
+    }
+
+    public class ServicesClass
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string type { get; set; }
+        public string logo_100px { get; set; }
+        public string ios_appstore_url { get; set; }
+        public string android_playstore_url { get; set; }
+        public string android_scheme { get; set; }
+        public string ios_scheme { get; set; }
+        public List<string> regions { get; set; }
+    }
+
+    public class Countries
+    {
+        public string country { get; set; }
+        public string name { get; set; }
+        public string flag { get; set; }
+    }
+
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -1,83 +1,11 @@
-﻿@page "/tvinfo"
+﻿@page "/tvinfo/{tvId:int}"
 @inject HttpClient Http
 
-<h1>Services</h1>
+<p>@tvId</p>
 
-<p>List of all streaming services and channels</p>
 
-@if (servicesList == null || regions == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <select @onchange="setRegion">
-        <option value="All">All</option>
-        @foreach (var region in regions)
-        {
-            <option value=@region.country>@region.name</option>
-        }
-    </select>
-
-    @foreach (var service in servicesList)
-    {
-        @if (region == "all")
-        {
-            <p>@service.name @service.type</p>
-            <img src="@service.logo_100px" />
-        }
-        else
-        {
-
-            @if (service.regions.Any(region.Contains))
-            {
-                <p>@service.name @service.type</p>
-                <img src="@service.logo_100px" />
-            }
-        }
-    }
-
-}
 
 @code {
-    private ServicesClass[] servicesList;
-    private Countries[] regions;
-    private string region = "all";
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
-
-        servicesList = await Http.GetFromJsonAsync<ServicesClass[]>("https://api.watchmode.com/v1/sources/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
-
-
-
-    }
-
-    public void setRegion(ChangeEventArgs e)
-    {
-        region = e.Value.ToString();
-    }
-
-    public class ServicesClass
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string type { get; set; }
-        public string logo_100px { get; set; }
-        public string ios_appstore_url { get; set; }
-        public string android_playstore_url { get; set; }
-        public string android_scheme { get; set; }
-        public string ios_scheme { get; set; }
-        public List<string> regions { get; set; }
-    }
-
-    public class Countries
-    {
-        public string country { get; set; }
-        public string name { get; set; }
-        public string flag { get; set; }
-    }
-
+    [Parameter]
+    public int tvId { get; set; }
 }

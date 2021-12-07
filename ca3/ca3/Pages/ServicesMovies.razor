@@ -1,11 +1,72 @@
 ﻿@page "/servicesmovies/{serviceId:int}"
+@inject HttpClient Http
 
 
 <p>@serviceId</p>
+@if (titlesList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<p>@titlesList.titles.Count / @titlesList.total_results</p>
+<p>@titlesList.page / @titlesList.total_pages</p>
+    <p></p>
 
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Year</td>
+                <td>Type</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in titlesList.titles)
+            {
+                <tr>
+                    <td>@t.title</td>
+                    <td>@t.year</td>
+                    <td>@t.type</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+}
 
 
 @code {
+
+
     [Parameter]
     public int serviceId { get; set; }
+
+    private Titles titlesList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&source_ids={serviceId}";
+        titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+    }
+
+    public class Title
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public int year { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+        public string tmdb_type { get; set; }
+        public string type { get; set; }
+    }
+
+    public class Titles
+    {
+        public List<Title> titles { get; set; }
+        public int page { get; set; }
+        public int total_results { get; set; }
+        public int total_pages { get; set; }
+    }
 }

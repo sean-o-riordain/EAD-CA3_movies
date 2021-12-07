@@ -629,12 +629,10 @@ D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\Services.razor.g.
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\MovieInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\PersonInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\Search.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\SeasonInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\ServicesMovies.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\TVInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\MovieInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\PersonInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\Search.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\SeasonInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\ServicesMovies.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\TVInfo.razor.g.cs

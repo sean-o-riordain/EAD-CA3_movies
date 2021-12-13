@@ -4,6 +4,7 @@
 <h1>Services</h1>
 
 <p>List of all streaming services and channels</p>
+<p>Click any Streaming Service to start searching for a title to watch </p>
 
 @if (servicesList == null || regions == null)
 {
@@ -27,50 +28,63 @@ else
         <option value="purchase">purchase</option>
     </select>
 
-    @foreach (var service in servicesList)
-    {
-        @if (region == "all" && paymentType == "all")
-        {
-            <p>**************</p>
-            <p>@service.name @service.type</p>
-            <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
-            <p>****************</p>
-        }
-        else if (region != "all" && paymentType == "all")
+    <div class="row">
+        <div class="col-1 border">
+            <h5>Search All streaming Services</h5>
+            <a href="/servicesTitles/0">Click Here</a>
+        </div>
+        @foreach (var service in servicesList)
         {
 
-            @if (service.regions.Any(region.Contains))
+            @if (region == "all" && paymentType == "all")
             {
-                <p>**************</p>
-                <p>@service.name @service.type</p>
-                <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
-                <p>****************</p>
+                <div class="col-1 border">
+                    <h5>@service.name</h5><p>type: @service.type</p>
+                    <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
+                </div>
             }
-        }
-        else if (region == "all" && paymentType != "all")
-        {
-
-            @if (service.type == paymentType)
+            else if (region != "all" && paymentType == "all")
             {
-                <p>**************</p>
-                <p>@service.name @service.type</p>
-                <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
-                <p>****************</p>
-            }
-        }
-        else
-        {
 
-            @if ((service.regions.Any(region.Contains)) && service.type == paymentType)
+                @if (service.regions.Any(region.Contains))
+                {
+                    <div class="col-1 border">
+
+                        <h5>@service.name </h5><p>type: @service.type</p>
+                        <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
+
+                    </div>
+                }
+            }
+            else if (region == "all" && paymentType != "all")
             {
-                <p>**************</p>
-                <p>@service.name @service.type</p>
-                <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
-                <p>****************</p>
-            }
-        }
-    }
 
+                @if (service.type == paymentType)
+                {
+                    <div class="col-1 border">
+
+                        <h5>@service.name </h5><p>type: @service.type</p>
+                        <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
+
+                    </div>
+                }
+            }
+            else
+            {
+
+                @if ((service.regions.Any(region.Contains)) && service.type == paymentType)
+                {
+                    <div class="col-1 border">
+
+                        <h5>@service.name </h5><p>type: @service.type</p>
+                        <a href="/servicesTitles/@service.id"><img src="@service.logo_100px" /></a>
+
+                    </div>
+                }
+            }
+
+        }
+    </div>
 }
 
 @code {

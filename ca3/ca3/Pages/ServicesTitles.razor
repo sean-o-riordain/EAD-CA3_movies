@@ -23,11 +23,15 @@ else
         <tbody>
             @foreach (var t in titlesList.titles)
             {
-                <tr>
-                    <td>@t.title</td>
-                    <td>@t.year</td>
-                    <td>@t.type</td>
-                </tr>
+   
+            <tr>
+                
+                <td><a href="/title/@t.id">@t.title</a></td>
+                <td>@t.year</td>
+                <td>@t.type</td>
+
+            </tr>
+
             }
         </tbody>
     </table>

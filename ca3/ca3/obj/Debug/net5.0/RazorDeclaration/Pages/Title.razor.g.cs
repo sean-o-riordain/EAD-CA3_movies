@@ -91,7 +91,7 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 15 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Title.razor"
+#line 23 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Title.razor"
        
     [Parameter]
     public int titleId { get; set; }
@@ -100,8 +100,48 @@ using ca3.Shared;
 
     protected override async Task OnInitializedAsync()
     {
-        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
+        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&append_to_response=seasons,episodes,cast-crew";
         title = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+    }
+
+
+
+    public class Season
+    {
+        public int id { get; set; }
+        public string poster_url { get; set; }
+        public string name { get; set; }
+        public string overview { get; set; }
+        public int? number { get; set; }
+        public string air_date { get; set; }
+        public int? episode_count { get; set; }
+    }
+
+    public class Episode
+    {
+        public int? id { get; set; }
+        public string name { get; set; }
+        public int? episode_number { get; set; }
+        public object season_number { get; set; }
+        public int? season_id { get; set; }
+        public int? tmdb_id { get; set; }
+        public object imdb_id { get; set; }
+        public string thumbnail_url { get; set; }
+        public string release_date { get; set; }
+        public object runtime_minutes { get; set; }
+        public string overview { get; set; }
+        public List<object> sources { get; set; }
+    }
+
+    public class CastCrew
+    {
+        public int? person_id { get; set; }
+        public string type { get; set; }
+        public string full_name { get; set; }
+        public string headshot_url { get; set; }
+        public string role { get; set; }
+        public int? episode_count { get; set; }
+        public object order { get; set; }
     }
 
     public class TitleInfo
@@ -111,21 +151,24 @@ using ca3.Shared;
         public string original_title { get; set; }
         public string plot_overview { get; set; }
         public string type { get; set; }
-        public int runtime_minutes { get; set; }
-        public int year { get; set; }
-        public object end_year { get; set; }
+        public int? runtime_minutes { get; set; }
+        public int? year { get; set; }
+        public int? end_year { get; set; }
         public string release_date { get; set; }
         public string imdb_id { get; set; }
-        public int tmdb_id { get; set; }
+        public int? tmdb_id { get; set; }
         public string tmdb_type { get; set; }
         public List<int> genres { get; set; }
         public double user_rating { get; set; }
-        public object critic_score { get; set; }
+        public int? critic_score { get; set; }
         public string us_rating { get; set; }
         public string original_language { get; set; }
         public List<int> similar_titles { get; set; }
-        public object networks { get; set; }
+        public List<int> networks { get; set; }
         public double relevance_percentile { get; set; }
+        public List<Season> seasons { get; set; }
+        public List<Episode> episodes { get; set; }
+        public List<CastCrew> cast_crew { get; set; }
     }
 
 #line default

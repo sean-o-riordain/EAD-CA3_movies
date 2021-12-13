@@ -2,16 +2,90 @@
 @inject HttpClient Http
 
 @if (person == null)
- {
-<p><em>Loading....</em></p>
- }
+{
+    <p><em>Loading....</em></p>
+}
 else
- {
-    <p>@person.full_name</p>
-    <p>@person.main_profession</p>
-    <p>Birthday: @person.date_of_birth</p>
-    <img src="@person.headshot_url" alt="@person.full_name"/>
- }
+{
+    <div class="row">
+        <div class="col-2">
+            <img src="@person.headshot_url" alt="@person.full_name" class="img-fluid" />
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-6">
+                    <h3>@person.full_name</h3>
+                </div>
+                <div class="col-6">
+                    <h5>Profession: @person.main_profession</h5>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <p>Birthday: @person.date_of_birth</p>
+                </div>
+                <div class="col-6">
+                    <p>Date Of Death: @person.date_of_death</p>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p>Place Of Birth: @person.place_of_birth</p>
+                    </div>
+                    <div class="col-6">
+                        <p>Gender: @person.gender</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+
+
+    <h2>Known For</h2>
+    @if (IsExpanded)
+    {
+        <button @onclick="Collapse">Collapse</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Title</td>
+                    <td>Year</td>
+                    <td>Critic Score</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var t in knownForTitles)
+                {
+                    <tr>
+                        <td><a href="/title/@t.id">@t.title</a></td>
+                        <td>@t.year</td>
+                        @if (t.critic_score == null)
+                        {
+                            <td>Information Not Available</td>
+                        }
+                        else
+                        {
+                            <td>@t.critic_score</td>
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <button @onclick="Expand">Expand</button>
+    }
+
+}
 
 
 @code {
@@ -19,12 +93,43 @@ else
     public int personId { get; set; }
 
     private Persons person;
+    public List<TitleInfo> knownForTitles = new List<TitleInfo>();
+    public bool IsExpanded { get; set; }
+
+    void Collapse()
+    {
+        IsExpanded = false;
+    }
+
+    async Task Expand()
+    {
+        if (knownForTitles.Count == 0 && person.known_for != null && person != null)
+        {
+
+            foreach (var t in person.known_for)
+            {
+                await knownFor(t);
+            }
+
+        }
+        IsExpanded = true;
+    }
 
 
     protected override async Task OnInitializedAsync()
     {
         string httpString = $"https://api.watchmode.com/v1/person/{personId}/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
         person = await Http.GetFromJsonAsync<Persons>(httpString);
+    }
+
+
+    protected async Task knownFor(int id)
+    {
+
+        string httpString = $"https://api.watchmode.com/v1/title/{id}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
+        TitleInfo knownForTitle = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+        knownForTitles.Add(knownForTitle);
+
     }
 
 
@@ -46,6 +151,30 @@ else
         public string gender { get; set; }
         public string headshot_url { get; set; }
         public List<int> known_for { get; set; }
+        public double relevance_percentile { get; set; }
+    }
+
+    public class TitleInfo
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public string original_title { get; set; }
+        public string plot_overview { get; set; }
+        public string type { get; set; }
+        public int runtime_minutes { get; set; }
+        public int year { get; set; }
+        public object end_year { get; set; }
+        public string release_date { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+        public string tmdb_type { get; set; }
+        public List<int> genres { get; set; }
+        public double user_rating { get; set; }
+        public object critic_score { get; set; }
+        public string us_rating { get; set; }
+        public string original_language { get; set; }
+        public List<int> similar_titles { get; set; }
+        public object networks { get; set; }
         public double relevance_percentile { get; set; }
     }
 }

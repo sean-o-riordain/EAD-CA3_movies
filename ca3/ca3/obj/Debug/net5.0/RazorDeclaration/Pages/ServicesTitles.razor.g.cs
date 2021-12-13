@@ -82,8 +82,8 @@ using ca3.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/tvinfo/{tvId:int}")]
-    public partial class TVInfo : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/servicesTitles/{serviceId:int}")]
+    public partial class ServicesTitles : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -91,10 +91,39 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 8 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\TVInfo.razor"
+#line 40 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\ServicesTitles.razor"
        
+
+
     [Parameter]
-    public int tvId { get; set; }
+    public int serviceId { get; set; }
+
+    private Titles titlesList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&source_ids={serviceId}";
+        titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+    }
+
+    public class Title
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public int year { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+        public string tmdb_type { get; set; }
+        public string type { get; set; }
+    }
+
+    public class Titles
+    {
+        public List<Title> titles { get; set; }
+        public int page { get; set; }
+        public int total_results { get; set; }
+        public int total_pages { get; set; }
+    }
 
 #line default
 #line hidden

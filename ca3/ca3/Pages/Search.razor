@@ -3,66 +3,103 @@
 
 <h1>Search</h1>
 
-@if (regions == null)
+
+<form @onsubmit="Searching">
+    <input @bind="@searchValue" type="text" placeholder="Search.." name="search">
+    <button type="submit">Search</button>
+</form>
+
+@if (searchResults == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>No Results to show</em></p>
 }
 else
 {
-    <select>
-            <option value="">All</option>
-            @foreach (var region in regions)
-            {
-                <option value=@region.country>@region.name</option>
-            }
-    </select>
+    <h3>People</h3>
+    @foreach (var p in searchResults.people_results)
+    {
+        <a href="/personinfo/@p.id"><p>@p.name</p></a>
+    }
+    <br />
+    <h3>Title</h3>
+    @foreach (var t in searchResults.title_results)
+    {
 
-    /*Genre*/
-    /*Release Year*/
-    /*Critic Score*/
-    /*User Rating*/
-    /*Type*/
-    /*US Rating*/
-    /*Run Time*/
-
-    /*Main Profession*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+      <a href="/title/@t.id"><p>@t.name</p></a>
+        
+    }
 }
 
 @code {
-    private Countries[] regions;
 
-    protected override async Task OnInitializedAsync()
+    private SearchResult searchResults;
+    private string searchValue;
+    private string lastValueSearched;
+
+
+    protected async Task Searching()
     {
-        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
-    }
-
-    public class Countries
-    {
-        public string country { get; set; }
-        public string name { get; set; }
-        public string flag { get; set; }
-    }
-
-
-        /*
-    <select @onchange="setGenre">
-        <option value="@int.MaxValue">All</option>
-        @foreach (var genre in genres)
+        if (searchValue != null && lastValueSearched != searchValue)
         {
-            <option value=@genre.id>@genre.name</option>
+            string searchValueHttp = searchValue.Replace(" ", "%20");
+            lastValueSearched = searchValue;
+
+            string httpString = $"https://api.watchmode.com/v1/search/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&search_field=name&search_value={searchValueHttp}";
+            searchResults = await Http.GetFromJsonAsync<SearchResult>(httpString);
         }
-    </select>
-    genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
-    private Genres[] genres;
-    private int genre = int.MaxValue;
-    public void setGenre(ChangeEventArgs e)
-    {
-        genre = Int32.Parse(e.Value.ToString());
     }
-    public class Genres
+
+    public class TitleResult
     {
+        public string resultType { get; set; }
         public int id { get; set; }
         public string name { get; set; }
-        public int? tmdb_id { get; set; }
-    }*/
+        public string type { get; set; }
+        public int year { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+        public string tmdb_type { get; set; }
+    }
+
+    public class PeopleResult
+    {
+        public string resultType { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public string main_profession { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+    }
+
+    public class SearchResult
+    {
+        public List<TitleResult> title_results { get; set; }
+        public List<PeopleResult> people_results { get; set; }
+    }
+
+
+
+
+
+    /*
+<select @onchange="setGenre">
+    <option value="@int.MaxValue">All</option>
+    @foreach (var genre in genres)
+    {
+        <option value=@genre.id>@genre.name</option>
+    }
+</select>
+genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+private Genres[] genres;
+private int genre = int.MaxValue;
+public void setGenre(ChangeEventArgs e)
+{
+    genre = Int32.Parse(e.Value.ToString());
+}
+public class Genres
+{
+    public int id { get; set; }
+    public string name { get; set; }
+    public int? tmdb_id { get; set; }
+}*/
 }

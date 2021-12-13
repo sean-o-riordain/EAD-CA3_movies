@@ -626,13 +626,11 @@ D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\build-gz\JsaI4NKt.gz
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\build-gz\HTke7Ygq.gz
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\Services.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\Services.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\MovieInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\PersonInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\Search.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\ServicesMovies.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\TVInfo.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\MovieInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\PersonInfo.razor.g.cs
 D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\Search.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\ServicesMovies.razor.g.cs
-D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\TVInfo.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\Title.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\Title.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\RazorDeclaration\Pages\ServicesTitles.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\ca3\obj\Debug\net5.0\Razor\Pages\ServicesTitles.razor.g.cs

@@ -82,8 +82,8 @@ using ca3.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/movieInfo/{movieId:int}")]
-    public partial class MovieInfo : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/title/{titleId:int}")]
+    public partial class Title : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -91,10 +91,42 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 9 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\MovieInfo.razor"
+#line 15 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Title.razor"
        
     [Parameter]
-    public int movieId { get; set; }
+    public int titleId { get; set; }
+
+    private TitleInfo title;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
+        title = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+    }
+
+    public class TitleInfo
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public string original_title { get; set; }
+        public string plot_overview { get; set; }
+        public string type { get; set; }
+        public int runtime_minutes { get; set; }
+        public int year { get; set; }
+        public object end_year { get; set; }
+        public string release_date { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+        public string tmdb_type { get; set; }
+        public List<int> genres { get; set; }
+        public double user_rating { get; set; }
+        public object critic_score { get; set; }
+        public string us_rating { get; set; }
+        public string original_language { get; set; }
+        public List<int> similar_titles { get; set; }
+        public object networks { get; set; }
+        public double relevance_percentile { get; set; }
+    }
 
 #line default
 #line hidden

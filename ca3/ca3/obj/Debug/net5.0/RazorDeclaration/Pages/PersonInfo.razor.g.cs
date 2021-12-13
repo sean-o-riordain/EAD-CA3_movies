@@ -91,10 +91,41 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 8 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\PersonInfo.razor"
+#line 17 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\PersonInfo.razor"
        
     [Parameter]
     public int personId { get; set; }
+
+    private Persons person;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        string httpString = $"https://api.watchmode.com/v1/person/{personId}/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
+        person = await Http.GetFromJsonAsync<Persons>(httpString);
+    }
+
+
+
+    public class Persons
+    {
+        public int id { get; set; }
+        public string full_name { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public int tmdb_id { get; set; }
+        public string imdb_id { get; set; }
+        public string main_profession { get; set; }
+        public object secondary_profession { get; set; }
+        public object tertiary_profession { get; set; }
+        public string date_of_birth { get; set; }
+        public string date_of_death { get; set; }
+        public string place_of_birth { get; set; }
+        public string gender { get; set; }
+        public string headshot_url { get; set; }
+        public List<int> known_for { get; set; }
+        public double relevance_percentile { get; set; }
+    }
 
 #line default
 #line hidden

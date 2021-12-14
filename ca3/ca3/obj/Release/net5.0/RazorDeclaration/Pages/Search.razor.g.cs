@@ -91,79 +91,55 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 33 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Search.razor"
-       
+#line 71 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Search.razor"
+               
 
-    private SearchResult searchResults;
-    private string searchValue;
-    private string lastValueSearched;
+        private SearchResult searchResults;
+        private string searchValue;
+        private string lastValueSearched;
 
 
-    protected async Task Searching()
-    {
-        if (searchValue != null && lastValueSearched != searchValue)
+        protected async Task Searching()
         {
-            string searchValueHttp = searchValue.Replace(" ", "%20");
-            lastValueSearched = searchValue;
+            if (searchValue != null && lastValueSearched != searchValue)
+            {
+                string searchValueHttp = searchValue.Replace(" ", "%20");
+                lastValueSearched = searchValue;
 
-            string httpString = $"https://api.watchmode.com/v1/search/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&search_field=name&search_value={searchValueHttp}";
-            searchResults = await Http.GetFromJsonAsync<SearchResult>(httpString);
+                string httpString = $"https://api.watchmode.com/v1/search/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&search_field=name&search_value={searchValueHttp}";
+                searchResults = await Http.GetFromJsonAsync<SearchResult>(httpString);
+            }
         }
-    }
 
-    public class TitleResult
-    {
-        public string resultType { get; set; }
-        public int id { get; set; }
-        public string name { get; set; }
-        public string type { get; set; }
-        public int year { get; set; }
-        public string imdb_id { get; set; }
-        public int tmdb_id { get; set; }
-        public string tmdb_type { get; set; }
-    }
+        public class TitleResult
+        {
+            public string resultType { get; set; }
+            public int id { get; set; }
+            public string name { get; set; }
+            public string type { get; set; }
+            public int year { get; set; }
+            public string imdb_id { get; set; }
+            public int tmdb_id { get; set; }
+            public string tmdb_type { get; set; }
+        }
 
-    public class PeopleResult
-    {
-        public string resultType { get; set; }
-        public int id { get; set; }
-        public string name { get; set; }
-        public string main_profession { get; set; }
-        public string imdb_id { get; set; }
-        public int tmdb_id { get; set; }
-    }
+        public class PeopleResult
+        {
+            public string resultType { get; set; }
+            public int id { get; set; }
+            public string name { get; set; }
+            public string main_profession { get; set; }
+            public string imdb_id { get; set; }
+            public int tmdb_id { get; set; }
+        }
 
-    public class SearchResult
-    {
-        public List<TitleResult> title_results { get; set; }
-        public List<PeopleResult> people_results { get; set; }
-    }
+        public class SearchResult
+        {
+            public List<TitleResult> title_results { get; set; }
+            public List<PeopleResult> people_results { get; set; }
+        }
 
-
-
-
-
-    /*
-<select @onchange="setGenre">
-    <option value="@int.MaxValue">All</option>
-    @foreach (var genre in genres)
-    {
-        <option value=@genre.id>@genre.name</option>
-    }
-</select>
-genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
-private Genres[] genres;
-private int genre = int.MaxValue;
-public void setGenre(ChangeEventArgs e)
-{
-    genre = Int32.Parse(e.Value.ToString());
-}
-public class Genres
-{
-    public int id { get; set; }
-    public string name { get; set; }
-    public int? tmdb_id { get; set; }
-}*/
+        
 
 #line default
 #line hidden

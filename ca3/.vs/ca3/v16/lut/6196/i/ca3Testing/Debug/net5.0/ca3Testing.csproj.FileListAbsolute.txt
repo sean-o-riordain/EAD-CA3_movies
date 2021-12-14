@@ -1,0 +1,6 @@
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\b\ca3Testing\Debug\net5.0\CoverletSourceRootsMapping
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3Testing\Debug\net5.0\ca3Testing.GeneratedMSBuildEditorConfig.editorconfig
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3Testing\Debug\net5.0\ca3Testing.AssemblyInfoInputs.cache
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3Testing\Debug\net5.0\ca3Testing.AssemblyInfo.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3Testing\Debug\net5.0\ca3Testing.dll
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3Testing\Debug\net5.0\ref\ca3Testing.dll

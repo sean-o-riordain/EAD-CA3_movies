@@ -7,6 +7,7 @@
 }
 else
 {
+    <h2 id="personInfo">Person Info</h2>
     <div class="row">
         <div class="col-2">
             <img src="@person.headshot_url" alt="@person.full_name" class="img-fluid" />
@@ -106,9 +107,11 @@ else
         if (knownForTitles.Count == 0 && person.known_for != null && person != null)
         {
 
-            foreach (var t in person.known_for)
+            foreach (var t in person.known_for.Take(5))
             {
-                await knownFor(t);
+                string httpString = $"https://api.watchmode.com/v1/title/{t}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933";
+                TitleInfo knownForTitle = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+                knownForTitles.Add(knownForTitle);
             }
 
         }
@@ -118,21 +121,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        string httpString = $"https://api.watchmode.com/v1/person/{personId}/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
+        string httpString = $"https://api.watchmode.com/v1/person/{personId}/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933";
         person = await Http.GetFromJsonAsync<Persons>(httpString);
     }
-
-
-    protected async Task knownFor(int id)
-    {
-
-        string httpString = $"https://api.watchmode.com/v1/title/{id}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
-        TitleInfo knownForTitle = await Http.GetFromJsonAsync<TitleInfo>(httpString);
-        knownForTitles.Add(knownForTitle);
-
-    }
-
-
 
     public class Persons
     {

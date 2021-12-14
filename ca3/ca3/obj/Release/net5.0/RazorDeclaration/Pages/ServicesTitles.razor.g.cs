@@ -91,7 +91,7 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 39 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\ServicesTitles.razor"
+#line 81 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\ServicesTitles.razor"
        
 
 
@@ -99,11 +99,90 @@ using ca3.Shared;
     public int serviceId { get; set; }
 
     private Titles titlesList;
+    private int page = 1;
+    private Genres[] genres;
+    private int genre = int.MaxValue;
+    private Countries[] regions;
+    private string region = "us";
+
+    public void setGenre(ChangeEventArgs e)
+    {
+        genre = Int32.Parse(e.Value.ToString());
+    }
+
+    public void setRegion(ChangeEventArgs e)
+    {
+        region = e.Value.ToString();
+    }
+
+    public int totalOnPage()
+    {
+        return (titlesList.titles.Count * page);
+    }
+    public int firstOnPage()
+    {
+        return ((page - 1) * 250 + 1);
+    }
+
+    public async Task nextPage()
+    {
+        if (page < titlesList.total_pages && titlesList.titles.Count != 0)
+        {
+            page += 1;
+            if (genre != int.MaxValue)
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}&genres={genre}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+            else
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+
+        }
+    }
+
+    public async Task PreiousPage()
+    {
+        if (page != 1)
+        {
+            page -= 1;
+            if (genre != int.MaxValue)
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}&genres={genre}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+            else
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+
+        }
+    }
+
+    public async Task getFiltered()
+    {
+        if (genre != int.MaxValue)
+        {
+            string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}&genres={genre}";
+            titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+        }
+        else
+        {
+            string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}";
+            titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+        }
+
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&source_ids={serviceId}";
+        string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}";
         titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+        genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
+        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
     }
 
     public class Title
@@ -123,6 +202,20 @@ using ca3.Shared;
         public int page { get; set; }
         public int total_results { get; set; }
         public int total_pages { get; set; }
+    }
+
+    public class Genres
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public int? tmdb_id { get; set; }
+    }
+
+    public class Countries
+    {
+        public string country { get; set; }
+        public string name { get; set; }
+        public string flag { get; set; }
     }
 
 #line default

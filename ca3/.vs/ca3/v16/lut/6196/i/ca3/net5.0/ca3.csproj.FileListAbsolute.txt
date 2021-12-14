@@ -1,0 +1,16 @@
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\ca3.csproj.AssemblyReference.cache
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\ca3.GeneratedMSBuildEditorConfig.editorconfig
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\ca3.AssemblyInfoInputs.cache
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\ca3.AssemblyInfo.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\ca3.RazorComponent.input.cache
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\App.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Pages\PersonInfo.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Pages\Search.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Pages\Services.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Pages\ServicesTitles.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Pages\Title.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Shared\SurveyPrompt.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\_Imports.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Shared\MainLayout.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\RazorDeclaration\Shared\NavMenu.razor.g.cs
+D:\College\Year 4\EAD\ca3\ca3\.vs\ca3\v16\lut\0\i\ca3\net5.0\ca3.RazorComponent.output.cache

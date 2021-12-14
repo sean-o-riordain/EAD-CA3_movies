@@ -1,16 +1,43 @@
 ﻿@page "/servicesTitles/{serviceId:int}"
 @inject HttpClient Http
 
-
-@if (titlesList == null)
+<h2 id="servicesList">Services List</h2>
+@if (titlesList == null || genres == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-<p>@titlesList.titles.Count / @titlesList.total_results</p>
-<p>@titlesList.page / @titlesList.total_pages</p>
-    <p></p>
+    <div class="row">
+        <div class="col-4">
+            <p>Genre:</p>
+            <select @onchange="setGenre">
+                <option value="@int.MaxValue">All</option>
+                @foreach (var genre in genres)
+                {
+                    <option value=@genre.id>@genre.name</option>
+                }
+            </select>
+        </div>
+        <div class="col-4">
+            <p>Region:</p>
+            <select @onchange="setRegion">
+                @foreach (var region in regions)
+                {
+                    <option value=@region.country>@region.name</option>
+                }
+            </select>
+        </div>
+        <div class="col-4">
+            <p>Showing results @firstOnPage() -> @totalOnPage() of @titlesList.total_results</p>
+            <p>Pages: @titlesList.page / @titlesList.total_pages</p>
+            <button @onclick="PreiousPage">Previous</button>
+            <button @onclick="nextPage">Next</button>
+        </div>
+    </div>
+    <div class="row">
+        <button @onclick="getFiltered">Filter</button>
+    </div>
 
     <table class="table">
         <thead>
@@ -23,20 +50,31 @@ else
         <tbody>
             @foreach (var t in titlesList.titles)
             {
-   
-            <tr>
-                
-                <td><a href="/title/@t.id">@t.title</a></td>
-                <td>@t.year</td>
-                <td>@t.type</td>
 
-            </tr>
+                <tr>
 
+                    <td><a id="title" href="/title/@t.id">@t.title</a></td>
+                    <td>@t.year</td>
+                    <td>@t.type</td>
+
+                </tr>
+
+            }
+            @if (titlesList.titles.Count() == 0)
+            {
+                <tr>
+                    <td> NO More Results with Current FIlters</td>
+                </tr>
             }
         </tbody>
     </table>
 
-
+    <div class="col-4">
+        <p>Showing results @firstOnPage() -> @totalOnPage() of @titlesList.total_results</p>
+        <p>Pages: @titlesList.page / @titlesList.total_pages</p>
+        <button @onclick="PreiousPage">Previous</button>
+        <button @onclick="nextPage">Next</button>
+    </div>
 }
 
 
@@ -47,11 +85,90 @@ else
     public int serviceId { get; set; }
 
     private Titles titlesList;
+    private int page = 1;
+    private Genres[] genres;
+    private int genre = int.MaxValue;
+    private Countries[] regions;
+    private string region = "us";
+
+    public void setGenre(ChangeEventArgs e)
+    {
+        genre = Int32.Parse(e.Value.ToString());
+    }
+
+    public void setRegion(ChangeEventArgs e)
+    {
+        region = e.Value.ToString();
+    }
+
+    public int totalOnPage()
+    {
+        return (titlesList.titles.Count * page);
+    }
+    public int firstOnPage()
+    {
+        return ((page - 1) * 250 + 1);
+    }
+
+    public async Task nextPage()
+    {
+        if (page < titlesList.total_pages && titlesList.titles.Count != 0)
+        {
+            page += 1;
+            if (genre != int.MaxValue)
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}&genres={genre}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+            else
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+
+        }
+    }
+
+    public async Task PreiousPage()
+    {
+        if (page != 1)
+        {
+            page -= 1;
+            if (genre != int.MaxValue)
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}&genres={genre}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+            else
+            {
+                string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}";
+                titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+            }
+
+        }
+    }
+
+    public async Task getFiltered()
+    {
+        if (genre != int.MaxValue)
+        {
+            string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}&genres={genre}";
+            titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+        }
+        else
+        {
+            string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}&regions={region}&page={page}";
+            titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+        }
+
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&source_ids={serviceId}";
+        string httpString = $"https://api.watchmode.com/v1/list-titles/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&source_ids={serviceId}";
         titlesList = await Http.GetFromJsonAsync<Titles>(httpString);
+        genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
+        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
     }
 
     public class Title
@@ -71,5 +188,19 @@ else
         public int page { get; set; }
         public int total_results { get; set; }
         public int total_pages { get; set; }
+    }
+
+    public class Genres
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public int? tmdb_id { get; set; }
+    }
+
+    public class Countries
+    {
+        public string country { get; set; }
+        public string name { get; set; }
+        public string flag { get; set; }
     }
 }

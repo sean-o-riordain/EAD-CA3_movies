@@ -5,8 +5,8 @@
 
 
 <form @onsubmit="Searching">
-    <input @bind="@searchValue" type="text" placeholder="Search.." name="search">
-    <button type="submit">Search</button>
+    <input id="search" @bind="@searchValue" type="text" placeholder="Search.." name="search">
+    <button id="send" type="submit">Search</button>
 </form>
 <p>*Note that searches must be exact</p>
 
@@ -56,7 +56,7 @@ else
                 @foreach (var t in searchResults.title_results)
                 {
                     <tr>
-                        <td><a href="/title/@t.id"><p>@t.name</p></a></td>
+                        <td ><a href="/title/@t.id"><p id="title">@t.name</p></a></td>
                         <td>@t.year</td>
                         <td>@t.type</td>
                     </tr>
@@ -82,7 +82,7 @@ else
                 string searchValueHttp = searchValue.Replace(" ", "%20");
                 lastValueSearched = searchValue;
 
-                string httpString = $"https://api.watchmode.com/v1/search/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&search_field=name&search_value={searchValueHttp}";
+                string httpString = $"https://api.watchmode.com/v1/search/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&search_field=name&search_value={searchValueHttp}";
                 searchResults = await Http.GetFromJsonAsync<SearchResult>(httpString);
             }
         }

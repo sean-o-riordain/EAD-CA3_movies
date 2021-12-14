@@ -91,17 +91,108 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 15 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Title.razor"
+#line 202 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Title.razor"
        
     [Parameter]
     public int titleId { get; set; }
 
     private TitleInfo title;
+    private Genres[] genres;
+    public List<TitleInfo> similarTitles = new List<TitleInfo>();
+    public bool IsExpanded { get; set; }
+    public bool CastExpanded { get; set; }
+    public bool SeasonExpanded { get; set; }
 
+    void Collapse()
+    {
+        IsExpanded = false;
+    }
+
+    async Task Expand()
+    {
+
+            if (similarTitles.Count == 0 && title.similar_titles != null && title != null)
+            {
+
+                foreach (var t in title.similar_titles.Take(5))
+                {
+                    string httpString = $"https://api.watchmode.com/v1/title/{t}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933";
+                    TitleInfo similar = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+                    similarTitles.Add(similar);
+                }
+
+            }
+        
+
+        IsExpanded = true;
+    }
+
+    void CollapseCast()
+    {
+        CastExpanded = false;
+    }
+
+    void ExpandCast()
+    {
+        CastExpanded = true;
+    }
+
+    void CollapseSeason()
+    {
+        SeasonExpanded = false;
+    }
+
+    void ExpandSeason()
+    {
+        SeasonExpanded = true;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        similarTitles = new List<TitleInfo>();
+        IsExpanded = false;
+        CastExpanded = false;
+        SeasonExpanded = false;
+        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&append_to_response=seasons,cast-crew";
+        title = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+
+    }
     protected override async Task OnInitializedAsync()
     {
-        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
+        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&append_to_response=seasons,cast-crew";
         title = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+        genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
+    }
+
+
+    public class Genres
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public int? tmdb_id { get; set; }
+    }
+
+
+    public class Season
+    {
+        public int id { get; set; }
+        public string poster_url { get; set; }
+        public string name { get; set; }
+        public string overview { get; set; }
+        public int? number { get; set; }
+        public string air_date { get; set; }
+        public int? episode_count { get; set; }
+    }
+
+    public class CastCrew
+    {
+        public int? person_id { get; set; }
+        public string type { get; set; }
+        public string full_name { get; set; }
+        public string headshot_url { get; set; }
+        public string role { get; set; }
+        public int? episode_count { get; set; }
+        public object order { get; set; }
     }
 
     public class TitleInfo
@@ -111,21 +202,23 @@ using ca3.Shared;
         public string original_title { get; set; }
         public string plot_overview { get; set; }
         public string type { get; set; }
-        public int runtime_minutes { get; set; }
-        public int year { get; set; }
-        public object end_year { get; set; }
+        public int? runtime_minutes { get; set; }
+        public int? year { get; set; }
+        public int? end_year { get; set; }
         public string release_date { get; set; }
         public string imdb_id { get; set; }
-        public int tmdb_id { get; set; }
+        public int? tmdb_id { get; set; }
         public string tmdb_type { get; set; }
         public List<int> genres { get; set; }
         public double user_rating { get; set; }
-        public object critic_score { get; set; }
+        public int? critic_score { get; set; }
         public string us_rating { get; set; }
         public string original_language { get; set; }
         public List<int> similar_titles { get; set; }
-        public object networks { get; set; }
+        public List<int> networks { get; set; }
         public double relevance_percentile { get; set; }
+        public List<Season> seasons { get; set; }
+        public List<CastCrew> cast_crew { get; set; }
     }
 
 #line default

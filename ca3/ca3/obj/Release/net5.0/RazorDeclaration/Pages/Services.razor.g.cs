@@ -91,7 +91,7 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 76 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Services.razor"
+#line 92 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\Services.razor"
        
     private ServicesClass[] servicesList;
     private Countries[] regions;
@@ -101,9 +101,9 @@ using ca3.Shared;
 
     protected override async Task OnInitializedAsync()
     {
-        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+        regions = await Http.GetFromJsonAsync<Countries[]>("https://api.watchmode.com/v1/regions/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
 
-        servicesList = await Http.GetFromJsonAsync<ServicesClass[]>("https://api.watchmode.com/v1/sources/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
+        servicesList = await Http.GetFromJsonAsync<ServicesClass[]>("https://api.watchmode.com/v1/sources/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
 
 
 
@@ -119,27 +119,7 @@ using ca3.Shared;
         paymentType = e.Value.ToString();
     }
 
-    /*
-    <select @onchange="setGenre">
-        <option value="@int.MaxValue">All</option>
-        @foreach (var genre in genres)
-        {
-            <option value=@genre.id>@genre.name</option>
-        }
-    </select>
-    genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl");
-    private Genres[] genres;
-    private int genre = int.MaxValue;
-    public void setGenre(ChangeEventArgs e)
-    {
-        genre = Int32.Parse(e.Value.ToString());
-    }
-    public class Genres
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int? tmdb_id { get; set; }
-    }*/
+
 
     public class ServicesClass
     {

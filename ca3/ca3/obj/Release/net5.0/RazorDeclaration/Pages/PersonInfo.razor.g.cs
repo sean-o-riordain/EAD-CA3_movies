@@ -91,21 +91,42 @@ using ca3.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 17 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\PersonInfo.razor"
+#line 92 "D:\College\Year 4\EAD\ca3\ca3\ca3\Pages\PersonInfo.razor"
        
     [Parameter]
     public int personId { get; set; }
 
     private Persons person;
+    public List<TitleInfo> knownForTitles = new List<TitleInfo>();
+    public bool IsExpanded { get; set; }
+
+    void Collapse()
+    {
+        IsExpanded = false;
+    }
+
+    async Task Expand()
+    {
+        if (knownForTitles.Count == 0 && person.known_for != null && person != null)
+        {
+
+            foreach (var t in person.known_for.Take(5))
+            {
+                string httpString = $"https://api.watchmode.com/v1/title/{t}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933";
+                TitleInfo knownForTitle = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+                knownForTitles.Add(knownForTitle);
+            }
+
+        }
+        IsExpanded = true;
+    }
 
 
     protected override async Task OnInitializedAsync()
     {
-        string httpString = $"https://api.watchmode.com/v1/person/{personId}/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl";
+        string httpString = $"https://api.watchmode.com/v1/person/{personId}/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933";
         person = await Http.GetFromJsonAsync<Persons>(httpString);
     }
-
-
 
     public class Persons
     {
@@ -124,6 +145,30 @@ using ca3.Shared;
         public string gender { get; set; }
         public string headshot_url { get; set; }
         public List<int> known_for { get; set; }
+        public double relevance_percentile { get; set; }
+    }
+
+    public class TitleInfo
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public string original_title { get; set; }
+        public string plot_overview { get; set; }
+        public string type { get; set; }
+        public int runtime_minutes { get; set; }
+        public int year { get; set; }
+        public object end_year { get; set; }
+        public string release_date { get; set; }
+        public string imdb_id { get; set; }
+        public int tmdb_id { get; set; }
+        public string tmdb_type { get; set; }
+        public List<int> genres { get; set; }
+        public double user_rating { get; set; }
+        public object critic_score { get; set; }
+        public string us_rating { get; set; }
+        public string original_language { get; set; }
+        public List<int> similar_titles { get; set; }
+        public object networks { get; set; }
         public double relevance_percentile { get; set; }
     }
 

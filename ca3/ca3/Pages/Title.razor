@@ -3,21 +3,200 @@
 
 @if (title == null)
 {
-<p><em>Loading....</em></p>
+    <p><em>Loading....</em></p>
 }
 else
 {
-<h2>@title.title</h2>
-<h3>Runtime: @title.runtime_minutes minutes</h3>
-<h3>Genres: </h3>
+    <div class="row">
+        <div class="col-4">
+            <div class="row">
+            <h1 id="title">@title.title</h1>
+             </div>
+            <div class="row">
+                <h4>Runtime: @title.runtime_minutes minutes</h4>
+              </div>
+            <div class="row">
+                <p>Age Rating: @title.us_rating</p>
+            </div>
+            <div class="row">
 
-<h4>
-    Cast and Crew
-</h4>
-<h4>
-    Season
+                @if (title.type == "tv_series")
+                {
+                    @if (title.end_year != null)
+                    {
+                        <p>Tv Series Running @title.year - @title.end_year</p>
+                    }
+                    else
+                    {
+                        <p>Tv Series Running @title.year - ongoing</p>
+                    }
 
-</h4>
+                }
+                else
+                {
+                    <p>@title.type: @title.year</p>
+                }
+
+            </div>
+            <div class="row">
+                <p>UserRating: @title.user_rating <br /> critic score: @title.critic_score</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <h4>@title.plot_overview</h4>
+        </div>
+    </div>
+  
+   
+
+    
+
+    <h3>Genres:</h3>
+
+    @foreach (var g in title.genres)
+    {
+        @foreach (var l in genres)
+        {
+            if (g == l.id)
+            {
+                <p>@l.name</p>
+            }
+
+        }
+    }
+
+    <h4>
+        Cast and Crew
+    </h4>
+    @if (CastExpanded)
+    {
+        <button  @onclick="CollapseCast">Collapse</button>
+        <table>
+            <thead>
+                <tr>
+                    <td>Headshot</td>
+                    <td>Name</td>
+                    <td>Role</td>
+                    @if (title.type == "tv_series")
+                    {
+                        <td>Episode Count</td>
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in title.cast_crew)
+                {
+                <tr>
+                    <td><img src="@c.headshot_url" /></td>
+                    @if (c.person_id != null)
+                    {
+                        <td id="castName"><a href="/personinfo/@c.person_id">@c.full_name</a></td>
+                    }
+                    else
+                    {
+                        <td>@c.full_name</td>
+                    }
+
+                    <td>@c.role</td>
+                    @if (title.type == "tv_series")
+                    {
+                        <td>@c.episode_count</td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <button id="expandCast" class="btn-info" @onclick="ExpandCast">Expand</button>
+
+    }
+
+    @if (title.type == "tv_series")
+    {
+        <h3>Season</h3>
+        @if (SeasonExpanded)
+        {
+            <button class="btn-info" @onclick="CollapseSeason">Collapse</button>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Poster</td>
+                        <td>Name</td>
+                        <td>Episode Count</td>
+                        <td>Overview</td>
+                    </tr>
+                </thead>
+                @foreach (var s in title.seasons)
+                {
+                    <tbody>
+                        <tr>
+                            <td><img src="@s.poster_url" /></td>
+                            <td>@s.name</td>
+                            <td>@s.episode_count</td>
+                            <td>@s.overview</td>
+                        </tr>
+
+                    </tbody>
+
+                }
+
+            </table>
+        }
+        else
+        {
+            <button class="btn-info" @onclick="ExpandSeason">Expand</button>
+
+        }
+
+
+    }
+
+    <h4>
+        Similar Titles
+    </h4>
+    @if (IsExpanded)
+    {
+        <button class="btn-info" @onclick="Collapse">Collapse</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Title</td>
+                    <td>Year</td>
+                    <td>Critic Score</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (similarTitles != null)
+                {
+                    @foreach (var t in similarTitles)
+                    {
+                        <tr>
+                            <td><a href="/title/@t.id">@t.title</a></td>
+                            <td>@t.year</td>
+                            @if (t.critic_score == null)
+                            {
+                                <td>Information Not Available</td>
+                            }
+                            else
+                            {
+                                <td>@t.critic_score</td>
+                            }
+
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <button class="btn-info" @onclick="Expand">Expand</button>
+    }
 }
 
 @code {
@@ -25,13 +204,80 @@ else
     public int titleId { get; set; }
 
     private TitleInfo title;
+    private Genres[] genres;
+    public List<TitleInfo> similarTitles = new List<TitleInfo>();
+    public bool IsExpanded { get; set; }
+    public bool CastExpanded { get; set; }
+    public bool SeasonExpanded { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    void Collapse()
     {
-        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=vMCQ0i6AkMxAo5afgFFjxSZVpAbpM6oiPNprmEZl&append_to_response=seasons,episodes,cast-crew";
-        title = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+        IsExpanded = false;
     }
 
+    async Task Expand()
+    {
+
+            if (similarTitles.Count == 0 && title.similar_titles != null && title != null)
+            {
+
+                foreach (var t in title.similar_titles.Take(5))
+                {
+                    string httpString = $"https://api.watchmode.com/v1/title/{t}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933";
+                    TitleInfo similar = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+                    similarTitles.Add(similar);
+                }
+
+            }
+        
+
+        IsExpanded = true;
+    }
+
+    void CollapseCast()
+    {
+        CastExpanded = false;
+    }
+
+    void ExpandCast()
+    {
+        CastExpanded = true;
+    }
+
+    void CollapseSeason()
+    {
+        SeasonExpanded = false;
+    }
+
+    void ExpandSeason()
+    {
+        SeasonExpanded = true;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        similarTitles = new List<TitleInfo>();
+        IsExpanded = false;
+        CastExpanded = false;
+        SeasonExpanded = false;
+        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&append_to_response=seasons,cast-crew";
+        title = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        string httpString = $"https://api.watchmode.com/v1/title/{titleId}/details/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933&append_to_response=seasons,cast-crew";
+        title = await Http.GetFromJsonAsync<TitleInfo>(httpString);
+        genres = await Http.GetFromJsonAsync<Genres[]>("https://api.watchmode.com/v1/genres/?apiKey=CHIRTCNnZhHt3Mzd4Bz0K0aLeoXp1Giq9OOI1933");
+    }
+
+
+    public class Genres
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public int? tmdb_id { get; set; }
+    }
 
 
     public class Season
@@ -43,22 +289,6 @@ else
         public int? number { get; set; }
         public string air_date { get; set; }
         public int? episode_count { get; set; }
-    }
-
-    public class Episode
-    {
-        public int? id { get; set; }
-        public string name { get; set; }
-        public int? episode_number { get; set; }
-        public object season_number { get; set; }
-        public int? season_id { get; set; }
-        public int? tmdb_id { get; set; }
-        public object imdb_id { get; set; }
-        public string thumbnail_url { get; set; }
-        public string release_date { get; set; }
-        public object runtime_minutes { get; set; }
-        public string overview { get; set; }
-        public List<object> sources { get; set; }
     }
 
     public class CastCrew
@@ -95,7 +325,6 @@ else
         public List<int> networks { get; set; }
         public double relevance_percentile { get; set; }
         public List<Season> seasons { get; set; }
-        public List<Episode> episodes { get; set; }
         public List<CastCrew> cast_crew { get; set; }
     }
 }
